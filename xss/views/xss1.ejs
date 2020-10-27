@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Sriracha', cursive;
+            background-color: #E9ECEF;
+        }
+        .rainbow-text {
+            background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+    <title>ที่ระบาย</title>
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 text-center">มีอะไรในใจเผยออกมา!!</h1>
+            <hr class="my-4">
+            <form action="/xss1" method="GET">
+                <div class="form-group">
+                    <label for="code">ระบาย: </label>
+                    <input class="form-control" type="text" name="code" id="code">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <% if(code) { %>
+            <h1 class="text-center rainbow-text"><%-code%></h1>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>

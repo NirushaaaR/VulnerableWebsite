@@ -1,0 +1,22 @@
+version: "3.8"
+
+services: 
+    xss1:
+        build: ./xss
+        volumes: 
+            - ./xss:/usr/src/app
+        environment: 
+            - REDIS=redis_db
+        ports: 
+            - "40000:8000"
+    
+    bot:
+        build: ./bot
+        volumes:
+            - "./integration-tests:/integration-tests"
+        command: "wait-for-it.sh xss1:8000 -- mocha --recursive /integration-tests"
+        depends_on: 
+            - xss1
+    
+    redis_db:
+        image: redis:6.0.8-alpine

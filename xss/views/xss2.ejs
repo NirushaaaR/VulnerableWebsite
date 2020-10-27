@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hardest Quiz</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4">Quiz Time</h1>
+            <% if (!name || !answer) { %>
+                <p class="lead">ตอบ quiz ให้ถูกเพื่อรับเงินรางวัล 1000000 บาท</p>
+                <hr>
+                <form method="POST" action="/xss2">
+                    <div class="form-group">
+                        <label for="name">ชื่อของคุณ: </label>
+                        <input type="text" name="name" id="name" class="form-control">
+                        <label for="answer">1024 2048 4096 เลขถัดไปควรเป็นอะไร ?</label>
+                        <input type="text" name="answer" id="answer" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">ส่ง</button>
+                </form>
+            <% } else { %>
+                <p class="lead">กำลังตรวจสอบ...</p>
+                <hr>
+                <form method="POST" action="/xss2">
+                    <div class="form-group">
+                        <label for="name">name: </label>
+                        <input type="text" name="name" id="name" class="form-control" value="<%- name %>" disabled>
+                        <label for="answer">1024 2048 4096 เลขถัดไปควรเป็นอะไร ?</label>
+                        <input type="text" name="answer" id="answer" class="form-control" value="<%- answer %>" disabled>
+                    </div>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>
