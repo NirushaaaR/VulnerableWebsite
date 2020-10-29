@@ -74,13 +74,11 @@ app.post('/xss2', (req, res) => {
         } else {
             client.EXPIRE(randomId, 120);
             try {
-                const browser = await puppeteer.launch();
+                const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
                 const page = await browser.newPage();
-                await page.goto('http://127.0.0.1:8000/xss2');
-                await page.setCookie([{'name': 'flag', 'value': 'FLAG{TEST_FLAG}'}]);
-                await page.goto(`http://127.0.0.1:8000/xss2?answerid=${randomId}`)
+                await page.setCookie({name: 'FLAG', value: 'FLAG{HERE_HAVE_SOME_COOKIE}', domain: '127.0.0.1'});
+                await page.goto(`http://127.0.0.1:8000/xss2?answerid=${randomId}`, {waitUntil: 'networkidle2'});
                 await browser.close();
-                
             } catch (error) {
                 console.error("error", error);
             } finally {
