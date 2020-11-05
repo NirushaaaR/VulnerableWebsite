@@ -3,8 +3,8 @@ version: "3.8"
 services: 
     xss1:
         build: ./xss
-        volumes: 
-            - ./xss:/usr/src/app
+        # volumes: 
+        #     - ./xss:/usr/src/app
         environment: 
             - REDIS=redis_db
         ports: 

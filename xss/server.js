@@ -36,7 +36,7 @@ app.get('/xss1-improve', (req, res) => {
     const test_code = xss(code);
     console.log(test_code, code);
 
-    if (test_code !== code && code.indexOf("onerror=") === -1) {
+    if (code && test_code !== code && code.indexOf("onerror=") === -1) {
         // attach a flag!!!
         code += "<script>alert('Here is Your Flag: FLAG{REMOVE_SCRIPT_IS_NOT_ENOUGHT}')</script>";
     }
