@@ -16,7 +16,7 @@
             <% if (!name || !answer) { %>
                 <p class="lead">ตอบ quiz ให้ถูกเพื่อรับเงินรางวัล 1000000 บาท</p>
                 <hr>
-                <form method="POST" action="/xss2">
+                <form method="POST" action="xss2">
                     <div class="form-group">
                         <label for="name">ชื่อของคุณ: </label>
                         <input type="text" name="name" id="name" class="form-control">
@@ -28,7 +28,7 @@
             <% } else { %>
                 <p class="lead">กำลังตรวจสอบ...</p>
                 <hr>
-                <form method="POST" action="/xss2">
+                <form method="POST" action="xss2">
                     <div class="form-group">
                         <label for="name">name: </label>
                         <input type="text" name="name" id="name" class="form-control" value="<%- name %>" disabled>

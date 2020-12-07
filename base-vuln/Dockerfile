@@ -16,7 +16,6 @@ RUN  apt-get update \
      && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh \
      && chmod +x /usr/sbin/wait-for-it.sh
 
-
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -25,11 +24,12 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install --only=production
+# RUN npm install --only=production
+RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
 
-CMD [ "node", "server" ]
+CMD [ "npm", "run", "dev" ]
