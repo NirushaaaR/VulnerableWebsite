@@ -1,6 +1,6 @@
-const puppeteer = require('puppeteer');
 const router = require('express').Router();
 const db = require('../db/manageDB');
+const { browserEnterXSS2, browserEnterXSS1 } = require('../functions/imitateBrowser');
 
 router.get('/xss1', (req, res) => {
     const code = req.query.code;
@@ -12,28 +12,11 @@ router.get('/xss1-improve', async (req, res) => {
     let code = req.query.code;
     var SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 
-    while (SCRIPT_REGEX.test(code)) {
-        code = code.replace(SCRIPT_REGEX, "");
-    }
-
     if (code !== undefined) {
         while (SCRIPT_REGEX.test(code)) {
             code = code.replace(SCRIPT_REGEX, "");
         }
-        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-        try {
-            const page = await browser.newPage();
-            page.on('dialog', async dialog => {
-                code += "<script>alert('Here is Your Flag: FLAG{REMOVE_SCRIPT_IS_NOT_ENOUGHT}')</script>";
-                await dialog.dismiss()
-            });
-            await page.goto(`http://127.0.0.1:8000/xss/xss1?code=${code}`);
-            await page.close();
-        } catch (error) {
-            console.log("error:", error.message);
-        } finally {
-            await browser.close();
-        }
+        code = await browserEnterXSS1(code);
     }
     return res.render('xss1-improve', { code });
 });
@@ -41,7 +24,7 @@ router.get('/xss1-improve', async (req, res) => {
 router.get('/xss2', async (req, res) => {
 
     const id = req.query.answerid;
-    console.log('id', id);
+    // console.log('id', id);
     if (id) {
 
         db.get("SELECT name, answer FROM quiz WHERE id=$id", {
@@ -77,23 +60,8 @@ router.post('/xss2', async (req, res) => {
                 res.send('ERROR CAN"T UPLOAD!!');
             }
             // set clear db every .. hour
-            const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-            try {
-                const page = await browser.newPage();
-                await page.setCookie({ name: 'FLAG', value: 'FLAG{HERE_HAVE_SOME_COOKIE}', domain: '127.0.0.1' });
-                console.log("before enter site")
-                page.on('dialog', async dialog => {
-                    // in case person use alert function
-                    await dialog.dismiss()
-                });
-                await page.goto(`http://127.0.0.1:8000/xss/xss2?answerid=${randomId}`);
-                console.log("after enter site")
-            } catch (error) {
-                console.error("error", error);
-            } finally {
-                await browser.close();
-                return res.redirect(`xss2?answerid=${randomId}`);
-            }
+            browserEnterXSS2(randomId);
+            return res.redirect(`xss2?answerid=${randomId}`);
         });
 });
 
