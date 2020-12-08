@@ -65,4 +65,8 @@ router.post('/xss2', async (req, res) => {
         });
 });
 
+router.get("/xss-dom", async(req, res) => {
+    res.render("xss-dom");
+})
+
 module.exports = router;
