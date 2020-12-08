@@ -15,8 +15,4 @@ function initNewDb() {
     });
 }
 
-initNewDb();
-// clear db and recreate it every 1 hour
-setInterval(initNewDb, 1000 * 60 * 60);
-
-module.exports = db 
+module.exports = {db, initNewDb} 

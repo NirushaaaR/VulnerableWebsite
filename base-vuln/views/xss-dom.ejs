@@ -22,6 +22,7 @@
             <div id="quotes">
 
             </div>
+            <button class="btn btn-primary" onclick="textXSS()">ทดสอบ XSS</button>
         </div>
     </div>
 
@@ -105,6 +106,18 @@
         const searchForm = document.getElementById("quote-search");
         searchForm.onchange = function (e) {
             searchQuote(e.target.value);
+        }
+
+        async function textXSS() {
+            const response = await fetch("test-xss", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: document.URL }),
+            });
+            const result = await response.json();
+            alert(result.message);
         }
     </script>
 </body>

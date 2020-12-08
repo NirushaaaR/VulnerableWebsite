@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const db = require('../db/manageDB');
-const { browserEnterXSS2, browserEnterXSS1 } = require('../functions/imitateBrowser');
+const { db } = require('../db/manageDB');
+const { browserEnterXSS2, browserEnterXSS1, browserTestXSS } = require('../functions/imitateBrowser');
 
 router.get('/xss1', (req, res) => {
     const code = req.query.code;
@@ -25,8 +25,7 @@ router.get('/xss2', async (req, res) => {
 
     const id = req.query.answerid;
     // console.log('id', id);
-    if (id) {
-
+    if (id !== undefined) {
         db.get("SELECT name, answer FROM quiz WHERE id=$id", {
             $id: id
         }, (error, row) => {
@@ -65,8 +64,24 @@ router.post('/xss2', async (req, res) => {
         });
 });
 
-router.get("/xss-dom", async(req, res) => {
+router.get("/xss-dom", async (req, res) => {
     res.render("xss-dom");
+});
+
+router.post("/test-xss", async (req, res) => {
+    // TODO: think of flag name...
+    const url = req.body.url;
+    const result = await browserTestXSS(url);
+    if (result) {
+        return res.send({ "message": "FLAG{SOME_FLAG_HERE}" })
+    }
+
+    return res.send({ "message": "ไม่มี xss" })
 })
+
+router.get("/xss-mutation", async (req, res) => {
+    const input = req.query.input;
+    res.render("xss-mutation", { input: input });
+});
 
 module.exports = router;

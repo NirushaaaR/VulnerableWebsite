@@ -38,3 +38,24 @@ exports.browserEnterXSS1 = async (code) => {
 
     return code
 }
+
+exports.browserTestXSS = async (url) => {
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+    let result = false;
+    try {
+        const page = await browser.newPage();
+        page.on('dialog', async dialog => {
+            // check if there alert in the site
+            result = true;
+            await dialog.dismiss()
+        });
+        await page.goto(url);
+        await page.close();
+    } catch (error) {
+        console.log("error:", error.message);
+    } finally {
+        await browser.close();
+    }
+
+    return result
+}
