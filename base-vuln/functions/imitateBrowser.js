@@ -4,7 +4,7 @@ exports.browserEnterXSS2 = async (randomId) => {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     try {
         const page = await browser.newPage();
-        await page.setCookie({ name: 'FLAG', value: 'FLAG{HERE_HAVE_SOME_COOKIE}', domain: '127.0.0.1' });
+        await page.setCookie({ name: 'secret', value: 'FLAG{HERE_HAVE_SOME_COOKIE}', domain: '127.0.0.1' });
         // console.log("before enter site")
         page.on('dialog', async dialog => {
             // in case person use alert function
