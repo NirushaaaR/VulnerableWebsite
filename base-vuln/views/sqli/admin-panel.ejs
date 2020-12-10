@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    <div>
+        <p>name: <%=user.name%></p>
+        <p>email: <%=user.email%></p>
+        <p>bio: <%=user.bio%></p>
+
+        <% if (user.isAdmin === 'true') { %>
+            <p>You're the admin!! get the flag!!</p>
+            <p>FLAG{BYPASS_THE_LOGIN_PANEL}</p>
+        <% } %>
+    </div>
+</body>
+</html>

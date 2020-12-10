@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>SQLI</title>
+</head>
+
+<body>
+    <div class="container">
+
+        <form method="GET">
+            <input type="text" name="person" id="person">
+            <button>Search</button>
+        </form>
+        <% if (gifts !== undefined){ %>
+        <div class="mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">name</th>
+                        <th scope="col">want</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% gifts.forEach( gift => { %>
+                    <tr>
+                        <td><%=gift.person%></td>
+                        <td><%=gift.want%></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        <% } %>
+    </div>
+</body>
+
+
+</html>

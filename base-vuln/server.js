@@ -1,5 +1,5 @@
 const express = require('express');
-const { initNewDb } = require('./db/manageDB');
+const { initNewDb, db } = require('./db/manageDB');
 
 initNewDb();
 // clear db and recreate it every 1 hour
@@ -13,6 +13,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 app.use('/xss', require('./routes/xss-route'));
+app.use('/sqli', require('./routes/sqli-route'));
 
 
 // Constants
