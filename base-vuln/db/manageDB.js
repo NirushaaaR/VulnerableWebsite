@@ -23,13 +23,13 @@ function initNewDb() {
         db.run("DROP TABLE IF EXISTS user");
 
         db.run("CREATE TABLE quiz (id INTEGER NOT NULL PRIMARY KEY, name TEXT, answer TEXT)");
-        db.run("CREATE TABLE user (id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT)");
+        db.run("CREATE TABLE user (id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT, isAdmin BOOLEAN City varchar(255) DEFAULT 'false')");
 
         const usersLists = [
-            [1,"admin", md5(`Plnd64Op12ffs`), "Here is my secret FLAG{ONLY_ME_CAN_READ_THIS}"]
+            [1,"admin", md5(`Plnd64Op12ffs`), "I am the admin!!!", true]
         ];
-        const command = "INSERT INTO user(id, username, password, information) VALUES " + usersLists.map(
-            d => `(${d[0]}, "${d[1]}", "${d[2]}", "${d[3]}")`).join(",");
+        const command = "INSERT INTO user(id, username, password, information, isAdmin) VALUES " + usersLists.map(
+            d => `(${d[0]}, "${d[1]}", "${d[2]}", "${d[3]}", "${d[4]}")`).join(",");
         db.run(command);
     });
 

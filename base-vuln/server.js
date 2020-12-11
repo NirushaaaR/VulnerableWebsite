@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const { initNewDb, db } = require('./db/manageDB');
 
 initNewDb();
@@ -9,6 +10,7 @@ setInterval(initNewDb, 1000 * 60 * 60);
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 

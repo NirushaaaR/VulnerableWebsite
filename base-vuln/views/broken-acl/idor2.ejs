@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>IDOR2</title>
 </head>
 
 <body>
-    <% if (user === undefined)  { %>
     <form method="post" id="sign-in-form">
         <input type="text" name="username" id="username">
         <input type="password" name="password" id="password">
@@ -23,14 +22,6 @@
         <input type="hidden" name="mode" value="register">
         <button>register</button>
     </form>
-    <% } else { %>
-    <p>username: <%=user.username%></p>
-    <p>information: <%=user.information%></p>
-    <% if (user.isAdmin == "true") { %>
-    <p>FLAG{INSECURE_ID_REFERENCE}</p>
-    <% } %>
-    <% } %>
-
 
     <% if (err !== undefined) { %>
     <h1>Error: <%=err%></h1>

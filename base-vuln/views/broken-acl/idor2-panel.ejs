@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDOR2</title>
+</head>
+<body>
+    <h2>user info</h2>
+    <p>username: <%=user.username%></p>
+    <p>information: <%=user.information%></p>
+    <% if (user.isAdmin == "true") { %>
+    <p>FLAG{UNSAFE_COOKIES_SETTING}</p>
+    <% } %>
+</body>
+</html>

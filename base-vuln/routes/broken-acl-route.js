@@ -36,7 +36,7 @@ router.post("/idor1", async (req, res) => {
                         console.log("err insert:", err.message);
                         res.render("broken-acl/idor1", { user: undefined, err: err.message });
                     } else {
-                        res.redirect("idor1?id=" + id);
+                        res.redirect("/broken-acl/idor1?id=" + id);
                     }
                 });
         });
@@ -49,10 +49,77 @@ router.post("/idor1", async (req, res) => {
                     console.log("err sign-in:", message);
                     res.render("broken-acl/idor1", { user: undefined, err: message });
                 } else {
-                    res.redirect("idor1?id=" + row["id"]);
+                    res.redirect("/broken-acl/idor1?id=" + row["id"]);
                 }
             })
+    } else {
+        res.end();
     }
-})
+});
+
+
+router.get("/idor2", async (req, res) => {
+    res.render("broken-acl/idor2", { "err": undefined });
+});
+
+router.post("/idor2", async (req, res) => {
+    const { username, password, information, mode } = req.body;
+    if (mode === "register") {
+        db.get("SELECT COUNT(id) AS numId FROM user", (err, row) => {
+            if (err) {
+                console.log("error count:", err.message);
+                res.render("broken-acl/idor2", { err: err.message });
+            }
+            const id = Number(row["numId"]) + 1;
+            db.run("INSERT INTO user(id, username, password, information) VALUES (?,?,?,?)",
+                [id, username, md5(password), information],
+                (err) => {
+                    if (err) {
+                        console.log("err insert:", err.message);
+                        res.render("broken-acl/idor2", { err: err.message });
+                    } else {
+                        res.cookie("username", username, { maxAge: 900000, httpOnly: true })
+                        res.redirect("/broken-acl/idor2/panel");
+                    }
+                });
+        });
+    } else if (mode === "sign-in") {
+        db.get("SELECT * FROM user WHERE username=? AND password=?",
+            [username, md5(password)],
+            (err, row) => {
+                if (err || row === undefined) {
+                    const message = err ? err.message : "user not exists";
+                    console.log("err sign-in:", message);
+                    res.render("broken-acl/idor2", { err: message });
+                } else {
+                    res.cookie("username", username, { maxAge: 900000, httpOnly: true })
+                    res.redirect("/broken-acl/idor2/panel");
+                }
+            })
+    } else {
+        res.end();
+    }
+});
+
+router.get("/idor2/panel", async (req, res) => {
+    if (req.cookies["username"] !== undefined) {
+        db.get("SELECT * FROM user WHERE username=?",
+            req.cookies["username"],
+            (err, row) => {
+                if (err || row === undefined) {
+                    const message = err ? err.message : "user not exists";
+                    res.clearCookie("username");
+                    console.log("err sign-in:", message);
+                    res.redirect("/broken-acl/idor2");
+                } else {
+                    // console.log(row);
+                    res.render("broken-acl/idor2-panel", {user: row});
+                }
+            })
+    } else {
+        res.redirect("/broken-acl/idor2");
+    }
+
+});
 
 module.exports = router;
