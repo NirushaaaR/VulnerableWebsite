@@ -14,6 +14,7 @@ app.set('view engine', 'ejs');
 
 app.use('/xss', require('./routes/xss-route'));
 app.use('/sqli', require('./routes/sqli-route'));
+app.use('/broken-acl', require('./routes/broken-acl-route'));
 
 
 // Constants

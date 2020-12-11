@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { db } = require('../db/manageDB');
+const { sqliDB } = require('../db/manageDB');
 const md5 = require('md5');
 
 router.get("/sqli1", async (req, res) => {
@@ -8,7 +8,7 @@ router.get("/sqli1", async (req, res) => {
 
     if (person !== undefined) {
         const command = `SELECT person,want from gift where person="${person}"`;
-        db.all(command, function (err, rows) {
+        sqliDB.all(command, function (err, rows) {
             console.log(command, rows);
             if (err) {
                 console.log(err.message);
@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
     const password = md5(req.body.password);
 
     const command = `SELECT * FROM user WHERE username="${username}" and password="${password}"`;
-    db.get(command, function (err, row) {
+    sqliDB.get(command, function (err, row) {
         console.log("command", command);
         console.log("row", row);
         if (err || row === undefined) {

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <% if (user === undefined)  { %>
+    <form method="post" id="sign-in-form">
+        <input type="text" name="username" id="username">
+        <input type="password" name="password" id="password">
+        <input type="hidden" name="mode" value="sign-in">
+        <button>sign-in</button>
+    </form>
+    <hr>
+    <form method="post" id="register-form">
+        <input type="text" name="username" id="username">
+        <input type="password" name="password" id="password">
+        <textarea name="information" id="information" cols="30" rows="10"></textarea>
+        <input type="hidden" name="mode" value="register">
+        <button>register</button>
+    </form>
+    <% } else { %>
+    <p>username: <%=user.username%></p>
+    <p>information: <%=user.information%></p>
+    <% } %>
+
+
+    <% if (err !== undefined) { %>
+    <h1>Error: <%=err%></h1>
+    <% } %>
+</body>
+
+</html>

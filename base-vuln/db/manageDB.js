@@ -8,19 +8,39 @@ let db = new sqlite3.Database(__dirname + '/sqlite.db', (err) => {
     console.log('Connected to the sqlite database.');
 });
 
+let sqliDB = new sqlite3.Database(__dirname + '/sqli.db', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the sqli database.');
+});
+
 // create db
 function initNewDb() {
     console.log("create new DB");
     db.serialize(function () {
         db.run("DROP TABLE IF EXISTS quiz");
-        db.run("DROP TABLE IF EXISTS gift");
-        db.run("DROP TABLE IF EXISTS secret");
         db.run("DROP TABLE IF EXISTS user");
 
         db.run("CREATE TABLE quiz (id INTEGER NOT NULL PRIMARY KEY, name TEXT, answer TEXT)");
-        db.run("CREATE TABLE gift (id INTEGER NOT NULL PRIMARY KEY, person TEXT, want TEXT)");
-        db.run("CREATE TABLE secret (flag TEXT)");
-        db.run("CREATE TABLE user (username TEXT, password TEXT, email TEXT, name TEXT, bio TEXT, isAdmin boolean)");
+        db.run("CREATE TABLE user (id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT)");
+
+        const usersLists = [
+            [1,"admin", md5(`Plnd64Op12ffs`), "Here is my secret FLAG{ONLY_ME_CAN_READ_THIS}"]
+        ];
+        const command = "INSERT INTO user(id, username, password, information) VALUES " + usersLists.map(
+            d => `(${d[0]}, "${d[1]}", "${d[2]}", "${d[3]}")`).join(",");
+        db.run(command);
+    });
+
+    sqliDB.serialize(function(){
+        sqliDB.run("DROP TABLE IF EXISTS gift");
+        sqliDB.run("DROP TABLE IF EXISTS secret");
+        sqliDB.run("DROP TABLE IF EXISTS user");
+
+        sqliDB.run("CREATE TABLE gift (id INTEGER NOT NULL PRIMARY KEY, person TEXT, want TEXT)");
+        sqliDB.run("CREATE TABLE secret (flag TEXT)");
+        sqliDB.run("CREATE TABLE user (username TEXT, password TEXT, email TEXT, name TEXT, bio TEXT, isAdmin boolean)");
 
         const giftLists = [
             [1, "bruce", "macbook"],
@@ -30,19 +50,19 @@ function initNewDb() {
         ]
         const command = "INSERT INTO gift(id, person, want) VALUES " + giftLists.map(
             d => `(${d[0]}, "${d[1]}", "${d[2]}")`).join(",");
-        db.run(command);
+        sqliDB.run(command);
 
         const flag = "FLAG{UNION_SELECT_ATTACK}"
-        db.run("INSERT INTO secret(flag) VALUES (?)", flag);
+        sqliDB.run("INSERT INTO secret(flag) VALUES (?)", flag);
         const users = [
             ["admin", md5(`Zg9O2Q2Jdm9XCv6v`), "admin@mail.com", "admin master", "I'm the admin!!", true],
             ["user", md5(`123456`), "user@mail.com", "user staff", "I'm not the admin!!", false],
         ]
         const userCommand = "INSERT INTO user(username, password, email, name, bio, isAdmin) VALUES " + users.map(
             u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}", "${u[4]}", "${u[5]}")`).join(",");
-        db.run(userCommand);
+        sqliDB.run(userCommand);
 
-    });
+    })
 }
 
-module.exports = { db, initNewDb } 
+module.exports = { db, initNewDb, sqliDB } 
