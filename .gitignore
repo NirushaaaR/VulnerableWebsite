@@ -1,5 +1,6 @@
 **/node_modules/**
 sqlite.db
 sqli.db
+brokenAuth.db
 
 **/__pycache__/**

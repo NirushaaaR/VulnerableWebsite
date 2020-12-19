@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog ของผม</title>
+</head>
+
+<body>
+
+    <%- include('./blog-nav.ejs') %>
+
+    <form method="post">
+        <input type="text" name="username" id="username" placeholder="username">
+        <input type="password" name="password" id="password" placeholder="password">
+        <button>Login</button>
+    </form>
+
+    <div>
+        ลืมรหัสผ่าน ?
+        <a href="forget-password">reset</a>
+    </div>
+
+    <% if (err) { %>
+        <p><%=err%></p>
+        <% } else if (flag) { %>
+        <p>ยินดีด้วยรับ flag ไปเลย: <%=flag%></p>
+        <% } %>
+
+</html>

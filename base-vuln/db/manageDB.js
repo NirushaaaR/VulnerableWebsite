@@ -15,6 +15,13 @@ let sqliDB = new sqlite3.Database(__dirname + '/sqli.db', (err) => {
     console.log('Connected to the sqli database.');
 });
 
+let brokenAuthDb = new sqlite3.Database(__dirname + '/brokenAuth.db', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the brokenAuthDb database.');
+})
+
 // create db
 function initNewDb() {
     console.log("create new DB");
@@ -26,14 +33,14 @@ function initNewDb() {
         db.run("CREATE TABLE user (id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT, isAdmin BOOLEAN City varchar(255) DEFAULT 'false')");
 
         const usersLists = [
-            [1,"admin", md5(`Plnd64Op12ffs`), "I am the admin!!!", true]
+            [1, "admin", md5(`Plnd64Op12ffs`), "I am the admin!!!", true]
         ];
         const command = "INSERT INTO user(id, username, password, information, isAdmin) VALUES " + usersLists.map(
             d => `(${d[0]}, "${d[1]}", "${d[2]}", "${d[3]}", "${d[4]}")`).join(",");
         db.run(command);
     });
 
-    sqliDB.serialize(function(){
+    sqliDB.serialize(function () {
         sqliDB.run("DROP TABLE IF EXISTS gift");
         sqliDB.run("DROP TABLE IF EXISTS secret");
         sqliDB.run("DROP TABLE IF EXISTS user");
@@ -62,7 +69,32 @@ function initNewDb() {
             u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}", "${u[4]}", "${u[5]}")`).join(",");
         sqliDB.run(userCommand);
 
+    });
+
+    brokenAuthDb.serialize(function () {
+        brokenAuthDb.run("DROP TABLE IF EXISTS user");
+        brokenAuthDb.run("DROP TABLE IF EXISTS blog");
+
+        brokenAuthDb.run("CREATE TABLE user(id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, question TEXT, answer TEXT)");
+        brokenAuthDb.run("CREATE TABLE blog(id INTEGER NOT NULL PRIMARY KEY, title TEXT, description TEXT, by TEXT)");
+
+        const users = [
+            [1, "admin", md5(`Zg9O2Q2Jdm9XCv6v`), "ชื่อของสัตว์เลี้ยงที่ชอบ", "บักกี้"],
+        ]
+        const userCommand = "INSERT INTO user(id, username, password, question, answer) VALUES " + users.map(
+            u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}", "${u[4]}")`).join(",");
+        brokenAuthDb.run(userCommand);
+
+        const blog = [
+            [1, "บล็อกใหม่ของโผมมม", "ผมได้สร้างบล็อคของตัวเองเป็นครั้งแรกสุดยอดไปเลยยย"],
+            [2, "วันนี้เป็นวันที่ดีจริง ๆ", "ท้องฟ้าแจ่มใส อากาศปลอดโปร่ง ภายใต้ร่มเงาไม้ใหญ่ ให้ความรู้สึกสดชื่นมักๆ"],
+            [3, "น้องหมาาา", "ผมเลี้งหมาด้วยนะ รู้รึเปล่า หมาผมชื่อ 'บักกี้' มันน่ารักมากๆเลย ถ้าโพสรูปได้ผมโพสไปแล้ว T_T"],
+            [4, "ธรรมะ กระตุกจิต กระชากใจ", "คำคมวันนี้ ถ้ารู้คิดก็เป็นอรหันต์ ถ้าไม่รู้คิดก็ตกนรก"],
+        ]
+        const blogCommand = "INSERT INTO blog(id, title, description, by) VALUES " + blog.map(
+            u => `("${u[0]}", "${u[1]}", "${u[2]}", "admin")`).join(",");
+        brokenAuthDb.run(blogCommand);
     })
 }
 
-module.exports = { db, initNewDb, sqliDB } 
+module.exports = { db, initNewDb, sqliDB, brokenAuthDb } 
