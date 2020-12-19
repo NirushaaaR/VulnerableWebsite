@@ -73,10 +73,12 @@ function initNewDb() {
 
     brokenAuthDb.serialize(function () {
         brokenAuthDb.run("DROP TABLE IF EXISTS user");
+        brokenAuthDb.run("DROP TABLE IF EXISTS user_weakpass");
         brokenAuthDb.run("DROP TABLE IF EXISTS user_scratch");
         brokenAuthDb.run("DROP TABLE IF EXISTS blog");
 
         brokenAuthDb.run("CREATE TABLE user(id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, question TEXT, answer TEXT)");
+        brokenAuthDb.run("CREATE TABLE user_weakpass(id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT)");
         brokenAuthDb.run("CREATE TABLE user_scratch(username TEXT, password TEXT, note TEXT)");
         brokenAuthDb.run("CREATE TABLE blog(id INTEGER NOT NULL PRIMARY KEY, title TEXT, description TEXT, by TEXT)");
 
@@ -103,6 +105,13 @@ function initNewDb() {
         const usersScratchCommand = "INSERT INTO user_scratch(username, password, note) VALUES " + usersScratch.map(
             u => `("${u[0]}", "${u[1]}", "${u[2]}")`).join(",");
         brokenAuthDb.run(usersScratchCommand);
+
+        const userWeakpass = [
+            [1, "admin", md5(`iloveu`), "ดูเว็บที่ฉันสร้างนี่สิ มันสุดแสนจะปลอดภัยหายห่วงไร้กังวล ไม่โดนแฮ็คแน่นอน FLAG{MY_PASSWORD_IS_PLENTY_STRONG}"],
+        ]
+        const userWeakpassCommand = "INSERT INTO user_weakpass(id, username, password, information) VALUES " + userWeakpass.map(
+            u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}")`).join(",");
+        brokenAuthDb.run(userWeakpassCommand);
     })
 }
 

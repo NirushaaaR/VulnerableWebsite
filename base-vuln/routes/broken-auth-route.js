@@ -113,11 +113,11 @@ router.post("/scratch-pad", async (req, res) => {
                 if (err) {
                     const message = err.message;
                     return res.render("broken-auth/scratch-pad", { message: message, user: undefined });
-                }     
+                }
                 return res.redirect("/broken-auth/scratch-pad");
             });
         }
-        
+
     } else {
         res.status(403).send("Forbidden");
     }
@@ -153,6 +153,50 @@ router.post("/scratch-pad-login", async (req, res) => {
         }
 
     });
+});
+
+
+router.get("/panel-login", async (req, res) => {
+    res.render("broken-auth/panel-login", { err: undefined })
+});
+
+router.post("/panel-login", async (req, res) => {
+    const { username, password } = req.body;
+    brokenAuthDb.get("SELECT * from user_weakpass WHERE username=? AND password=?", [username, md5(password)], (err, row) => {
+        if (err || row === undefined) {
+            const message = err ? err.message : "ไม่พบ user, password ในระบบ";
+            console.log("err sign-in:", message);
+            return res.render("broken-auth/panel-login", { err: message });
+        }
+
+        const token = jwt.sign({ username: username }, "THIS_IS_A_SECRET_THAT_NOT_EASILY_CRACKED");
+        res.cookie("tokenpanel", token, { maxAge: 900000, httpOnly: true });
+        // set jwt as admin and redirect
+        return res.redirect("/broken-auth/panel");
+    });
+});
+
+router.get("/panel", async (req, res) => {
+    if (req.cookies.tokenpanel) {
+        const decode = jwt.decode(req.cookies.tokenpanel, "THIS_IS_A_SECRET_THAT_NOT_EASILY_CRACKED");
+        // get user data here
+        brokenAuthDb.get("SELECT * FROM user_weakpass WHERE username=?", decode.username, (err, row) => {
+            if (err) {
+                const message = err.message;
+                console.log("error:", message);
+                return res.redirect("/broken-auth/panel-login");
+            }
+            else if (row === undefined) {
+                // token is invalid!!!
+                res.clearCookie("tokenpanel");
+                return res.redirect("/broken-auth/panel-login");
+            } else {
+                return res.render("broken-auth/panel", { user: row });
+            }
+        });
+    } else {
+        return res.redirect("/broken-auth/panel-login");
+    }
 });
 
 
