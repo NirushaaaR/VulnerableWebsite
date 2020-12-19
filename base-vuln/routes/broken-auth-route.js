@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { brokenAuthDb } = require('../db/manageDB');
+const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 
 router.get("/blog", async (req, res) => {
@@ -73,6 +74,86 @@ router.post("/forget-password", async (req, res) => {
     });
 });
 
+
+router.get("/scratch-pad", async (req, res) => {
+    if (req.cookies.token) {
+        // decode token
+        const decode = jwt.decode(req.cookies.token, "secret");
+        // get user data here
+        brokenAuthDb.get("SELECT * FROM user_scratch WHERE username=?", decode.username, (err, row) => {
+            if (err) {
+                const message = err.message;
+                return res.render("broken-auth/scratch-pad", { message: message, user: undefined });
+            }
+            else if (row === undefined) {
+                // token is invalid!!!
+                res.clearCookie("token");
+                return res.render("broken-auth/scratch-pad", { message: "token ผิดสมัคร User ใหม่", user: undefined });
+            } else {
+                return res.render("broken-auth/scratch-pad", { user: row, message: undefined });
+            }
+        });
+    } else {
+        res.render("broken-auth/scratch-pad", { user: undefined, message: undefined });
+    }
+});
+
+router.post("/scratch-pad", async (req, res) => {
+    // admin can't save note
+    if (req.cookies.token) {
+        // decode token
+        const note = req.body.note;
+        const decode = jwt.decode(req.cookies.token, "secret");
+        // get user data here
+        if (decode.username === "admin") {
+            return res.redirect("/broken-auth/scratch-pad");
+        } else {
+            // save note of other user
+            brokenAuthDb.run("UPDATE user_scratch SET note=? WHERE username=?", [note, decode.username], (err) => {
+                if (err) {
+                    const message = err.message;
+                    return res.render("broken-auth/scratch-pad", { message: message, user: undefined });
+                }     
+                return res.redirect("/broken-auth/scratch-pad");
+            });
+        }
+        
+    } else {
+        res.status(403).send("Forbidden");
+    }
+});
+
+router.post("/scratch-pad-login", async (req, res) => {
+    const { username, password } = req.body;
+    brokenAuthDb.get("SELECT * FROM user_scratch WHERE username=?", username, (err, row) => {
+        if (err) {
+            const message = err.message;
+            return res.render("broken-auth/scratch-pad", { message: message, user: undefined });
+        }
+        else if (row === undefined) {
+            // create new user here
+            brokenAuthDb.run("INSERT INTO user_scratch(username, password, note) VALUES (?, ?, ?)", [username, md5(password), "โน้ตของคุณที่นี่"], (err) => {
+                if (err) {
+                    const message = err.message;
+                    return res.render("broken-auth/scratch-pad", { message: message, user: undefined });
+                }
+                // create jwt here too
+                const token = jwt.sign({ username: username }, "secret");
+                res.cookie("token", token, { maxAge: 900000, httpOnly: true });
+                return res.redirect("/broken-auth/scratch-pad");
+            });
+        } else if (row.password == md5(password)) {
+            // create jwt here
+            const token = jwt.sign({ username: username }, "secret");
+            res.cookie("token", token, { maxAge: 900000, httpOnly: true });
+            return res.redirect("/broken-auth/scratch-pad");
+        } else {
+            // wrong password
+            return res.render("broken-auth/scratch-pad", { message: "password ผิดเปลี่ยนไปใช้ username อื่นซะ", user: undefined });
+        }
+
+    });
+});
 
 
 module.exports = router;

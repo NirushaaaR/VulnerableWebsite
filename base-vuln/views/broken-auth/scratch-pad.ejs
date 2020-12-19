@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scratch-pad</title>
+</head>
+<body>
+    เว็บไซต์ที่จะให้คุณเขียนเก็บ note ของคุณแบบฟรี ๆ
+    <% if (user) { %>
+        <p>
+            note ของ <%=user.username%>
+        </p>
+        <form method="post">
+            <textarea name="note" id="note" cols="30" rows="10"><%=user.note%></textarea>
+            <button>save note</button>
+        </form>
+    <% } else { %>
+        สมัครใช้ note!!
+        <form action="scratch-pad-login" method="post">
+            <input type="text" name="username" id="username" placeholder="username ของคุณ">
+            <input type="password" name="password" id="password" placeholder="password ของคุณ">
+            <button>ใช้งาน</button>
+        </form>
+    <% } %>
+
+    <% if (message) { %>
+    <p>message: <%=message%></p>
+    <% } %>
+</body>
+</html>

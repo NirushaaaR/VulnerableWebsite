@@ -73,13 +73,15 @@ function initNewDb() {
 
     brokenAuthDb.serialize(function () {
         brokenAuthDb.run("DROP TABLE IF EXISTS user");
+        brokenAuthDb.run("DROP TABLE IF EXISTS user_scratch");
         brokenAuthDb.run("DROP TABLE IF EXISTS blog");
 
         brokenAuthDb.run("CREATE TABLE user(id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, question TEXT, answer TEXT)");
+        brokenAuthDb.run("CREATE TABLE user_scratch(username TEXT, password TEXT, note TEXT)");
         brokenAuthDb.run("CREATE TABLE blog(id INTEGER NOT NULL PRIMARY KEY, title TEXT, description TEXT, by TEXT)");
 
         const users = [
-            [1, "admin", md5(`Zg9O2Q2Jdm9XCv6v`), "ชื่อของสัตว์เลี้ยงที่ชอบ", "บักกี้"],
+            [1, "admin", md5(`Zg9O2Q2Jdm9XCv6vsss`), "ชื่อของสัตว์เลี้ยงที่ชอบ", "บักกี้"],
         ]
         const userCommand = "INSERT INTO user(id, username, password, question, answer) VALUES " + users.map(
             u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}", "${u[4]}")`).join(",");
@@ -94,6 +96,13 @@ function initNewDb() {
         const blogCommand = "INSERT INTO blog(id, title, description, by) VALUES " + blog.map(
             u => `("${u[0]}", "${u[1]}", "${u[2]}", "admin")`).join(",");
         brokenAuthDb.run(blogCommand);
+
+        const usersScratch = [
+            ["admin", md5(`Zg9O2Q2Jdm9XCvdasdas6v`), "ว้าวเป็นที่เก็บความลับได้อย่างดีเลย นี่ไงหล่่ะความลับของฉัน FLAG{JWT_IS_SUPER_RELIABLE}"],
+        ]
+        const usersScratchCommand = "INSERT INTO user_scratch(username, password, note) VALUES " + usersScratch.map(
+            u => `("${u[0]}", "${u[1]}", "${u[2]}")`).join(",");
+        brokenAuthDb.run(usersScratchCommand);
     })
 }
 
