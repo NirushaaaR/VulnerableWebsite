@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="mainForm">
+        <input type="text" name="username" id="username">
+        <input type="password" name="password" id="password">
+        <button>Login</button>
+    </form>
+
+    <script>
+        mainForm.onsubmit = function(e) {
+            e.preventDefault();
+            if (username.value == "admin" && password.value=="EUGpTP5P") {
+                alert("ล็อกอินได้สำเร็จเย้! FLAG{CLIENT_SIDE_JS_4453}")
+            } else {
+                alert("username หรือ password ผิด ลองใหม่อีกครั้ง")
+            }
+        }
+    </script>
+</body>
+</html>
