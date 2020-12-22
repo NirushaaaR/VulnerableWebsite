@@ -1,8 +1,9 @@
 import os
 from flask import Flask, request, render_template, flash, redirect, url_for, make_response
 import pymongo
-from hashlib import md5
+from bson import ObjectId
 import jwt
+from ast import literal_eval
 
 app = Flask(__name__)
 app.secret_key = b'268253972110107b860ed1b86e43ef9413b437bff7d6ee3432dabc2fff35e7a3'
@@ -15,14 +16,24 @@ user_collection = db.users
 # user {username str, password str, secrets []}
 
 def create_token(user_id):
-    encoded_jwt = jwt.encode({'id': user_id}, app.secret_key, algorithm='HS256')
+    encoded_jwt = jwt.encode({'id': str(user_id)}, app.secret_key, algorithm='HS256')
     return encoded_jwt.decode('ascii')
 
 
 def decode_token(token):
-    user_id = jwt.decode(token, app.secret_key, algorithms=['HS256'])
-    user = user_collection.find_one({"_id": user_id})
+    user_id = jwt.decode(token, app.secret_key, algorithms=['HS256'])["id"]
+    user = user_collection.find_one({"_id": ObjectId(user_id)})
     return user
+
+
+def reset_db():
+    user_collection.delete_many({})
+
+    users = [{
+        "username": "",
+        "password": "",
+        "secrets": []
+    }]
 
 
 @app.route("/")
@@ -37,14 +48,26 @@ def register():
         password2 = request.form["password2"]
         if password != password2:
             flash("password ไม่เหมือนกัน")
+            return render_template("register.html")
+        user_exists = user_collection.find_one({"username": username})
+        if user_exists:
+            flash("username นี้ถูกใช้ไปแล้วกรุณาใช้ username อื่น")
+            return render_template("register.html")
         user = {
             "username": username,
-            "password": md5(password.encode()),
+            "password": password,
             "secrets": []
         }
+
+        # TODO: fail safe if the user are more than ... collection reset database
+        count_user = user_collection.count_documents()
+        print(count_user)
+        if count_user > 50:
+            # reset database
+            reset_db()
+
         result = user_collection.insert_one(user)
         user_id = result.inserted_id
-        # TODO: fail safe if the user are more than ... collection reset database
         # create token here
         token = create_token(user_id)
         resp = make_response(redirect(url_for("secret")))
@@ -52,12 +75,20 @@ def register():
         return resp
     return render_template("register.html")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        user = user_collection.find_one({"username": username, "password": md5(password.encode())})
+        try:
+            # so the challenge is easier
+            password = literal_eval(password)
+        except:
+            pass
+        
+        print(password)
+        # nosql injection!!
+        user = user_collection.find_one({"username": username, "password": password})
         if user is not None:
             # token
             token = create_token(user["_id"])
@@ -67,7 +98,7 @@ def login():
         flash("username หรือ password ผิด")
     return render_template("login.html")
 
-@app.route("/secret")
+@app.route("/secret", methods=["GET", "POST"])
 def secret():
     token = request.cookies.get("token_nosqli")
     if not token:
@@ -77,7 +108,17 @@ def secret():
     user = decode_token(token)
     if not user:
         flash("token หมกอายุกรุณา login ใหม่")
-        return redirect("login")
+        resp = (redirect("login"))
+        resp.set_cookie("token_nosqli", "", max_age=0)
+        return resp
+    
+    if request.method == "POST":
+        if len(user.get("secrets", [])) >= 3:
+            flash("secret ของคุณเต็มแล้ว กรุณาจ่าย 100000000000000 บาทเพื่อเก็บ secret อย่างไม่จำกัด!!")
+        else:
+            secret = request.form["secret"]
+            user["secrets"].append(secret)
+            user_collection.update_one({ "_id": ObjectId(user["_id"]) }, { "$set": {"secrets": user["secrets"]} })
     # return secret
     return render_template("secret.html", secrets=user.get("secrets", []))
 
