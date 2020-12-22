@@ -30,11 +30,18 @@ def reset_db():
     user_collection.delete_many({})
 
     users = [{
-        "username": "",
-        "password": "",
-        "secrets": []
+        "username": "Dang",
+        "password": "aLmKs12psl@fs",
+        "secrets": ["ใคร ๆ ก็มีความลับกันทั้งนั้น", "โลกนี้นะเราไว้ใจใครไม่ได้หรอก", "FLAG{NOSQL_INJECTION_GO_BURRR}"]
+    }, {
+        "username": "John",
+        "password": "sdjjipoq255@a",
+        "secrets": ["อย่าถามว่าเราเพ้อถึงใคร ก็เธอเองนั่นไง เธอนั่นแหละ เธอหน่ะ"]
     }]
 
+    user_collection.insert_many(users)
+
+reset_db()
 
 @app.route("/")
 def index():
