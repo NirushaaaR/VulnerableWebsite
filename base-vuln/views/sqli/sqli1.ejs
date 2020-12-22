@@ -10,32 +10,39 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-4">
 
+        <h1>มาดูกันว่าปีนี้ใครจะได้ของขวัญอะไรบ้าง!!</h1>
+        <hr>
         <form method="GET">
+            <label for="person">ชื่อ: </label>
             <input type="text" name="person" id="person">
             <button>Search</button>
         </form>
         <% if (gifts !== undefined){ %>
-        <div class="mt-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">name</th>
-                        <th scope="col">want</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% gifts.forEach( gift => { %>
-                    <tr>
-                        <td><%=gift.person%></td>
-                        <td><%=gift.want%></td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        </div>
-        <% } %>
+            <% if (gifts.length == 0) { %>
+                <h1>ดูเหมือนคุฌจะไม่ได้รับของขวัญปีนี้ 😭</h1>
+            <% } else { %>
+            <div class="mt-4">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อ</th>
+                            <th scope="col">ได้ของขวัญ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% gifts.forEach( gift => { %>
+                        <tr>
+                            <td><%=gift.person%></td>
+                            <td><%=gift.want%></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <% }  %>
+        <% }  %>
     </div>
 </body>
 

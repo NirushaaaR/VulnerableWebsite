@@ -8,24 +8,44 @@
 </head>
 
 <body>
-    <form method="post" id="sign-in-form">
-        <input type="text" name="username" id="username">
-        <input type="password" name="password" id="password">
-        <input type="hidden" name="mode" value="sign-in">
-        <button>sign-in</button>
-    </form>
-    <hr>
-    <form method="post" id="register-form">
-        <input type="text" name="username" id="username">
-        <input type="password" name="password" id="password">
-        <textarea name="information" id="information" cols="30" rows="10"></textarea>
-        <input type="hidden" name="mode" value="register">
-        <button>register</button>
-    </form>
+    <div class="container">
 
-    <% if (err !== undefined) { %>
-    <h1>Error: <%=err%></h1>
-    <% } %>
-</body>
-
+        <% if (err !==undefined) { %>
+            <div class="alert alert-danger my-4" role="alert">
+                Error: <%=err%>
+            </div>
+            <% } %>
+            <form method="post" id="sign-in-form" class="my-4">
+                Login
+                <div class="form-group">
+                    <label for="username">username</label>
+                    <input type="text" name="username" id="username" placeholder="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">password</label>
+                    <input type="password" name="password" id="password" placeholder="password" class="form-control" required>
+                </div>
+                <input type="hidden" name="mode" value="sign-in">
+                <button class="btn btn-primary">sign-in</button>
+            </form>
+            <hr class="my-4">
+            <form method="post" id="register-form">
+                ไม่มี account ? Register
+                <div class="form-group">
+                    <label for="username">username</label>
+                    <input type="text" name="username" id="username" placeholder="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">password</label>
+                    <input type="password" name="password" id="password" placeholder="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="information">ข้อมูลส่วนตัว</label>
+                    <input type="text" name="information" id="information" placeholder="information" class="form-control" required>
+                </div>
+                <input type="hidden" name="mode" value="register">
+                <button class="btn btn-primary">register</button>
+            </form>
+        </div>
+    </body>
 </html>

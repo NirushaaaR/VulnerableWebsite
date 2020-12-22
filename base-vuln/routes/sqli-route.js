@@ -44,4 +44,14 @@ router.post("/login", async (req, res) => {
 
 })
 
+router.get("/blind", async (req, res) => {
+    sqliDB.get("PRAGMA full_column_names;", (err, row) => {
+        if (err) {
+            console.log("Error:", err);
+        }
+        console.log(row);
+        return res.send("testing");
+    })
+});
+
 module.exports = router;

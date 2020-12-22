@@ -22,7 +22,7 @@ router.get("/idor1", async (req, res) => {
 
 router.post("/idor1", async (req, res) => {
     const { username, password, information, mode } = req.body;
-    if (mode === "register") {
+    if (mode === "register" && username !== "admin") {
         db.get("SELECT COUNT(id) AS numId FROM user", (err, row) => {
             if (err) {
                 console.log("error count:", err.message);
@@ -45,7 +45,7 @@ router.post("/idor1", async (req, res) => {
             [username, md5(password)],
             (err, row) => {
                 if (err || row === undefined) {
-                    const message = err ? err.message : "user not exists";
+                    const message = err ? err.message : "ไม่มี username นี้ในระบบ";
                     console.log("err sign-in:", message);
                     res.render("broken-acl/idor1", { user: undefined, err: message });
                 } else {
@@ -53,7 +53,10 @@ router.post("/idor1", async (req, res) => {
                 }
             })
     } else {
-        res.end();
+        if (username === "admin"){
+            return res.send("ไม่สามารถใช้ username Admin ได้")
+        }
+        res.send("เกิดข้อผิดพลาดลองใหม่อีกครั้ง")
     }
 });
 
