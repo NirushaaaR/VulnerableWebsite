@@ -67,7 +67,7 @@ def register():
         }
 
         # TODO: fail safe if the user are more than ... collection reset database
-        count_user = user_collection.count_documents()
+        count_user = user_collection.count_documents({})
         print(count_user)
         if count_user > 50:
             # reset database

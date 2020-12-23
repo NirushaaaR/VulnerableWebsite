@@ -1,28 +1,35 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
-{% block head %}
-  {{ super() }}
-  <style type="text/css">
-    .important { color: #336699; }
-  </style>
-{% endblock %}
+
 {% block content %}
-  <h1>Home</h1>
-  <p class="important">
-    ยินดีต้อนรับสู่คลังเก็บความลับของเรา คุณจะสามารถเก็บความลับของคุณไว้โดยที่ไม่มีใครแอบมาอ่านได้!! เก็บความลับของคุณกับเราวันนี้เริ่มต้น FREE ไม่มีค่าใช้จ่าย!!
-  </p>
 
-  <div>
-    Feedback จากผู้ใช้
-
-    <div>
-      username: Dang
-      <p>"เป็นที่เก็บความลับได้อย่างดี ทำให้ผมไม่ใจว่าความลับของผมจะไม่ถูกเปิดเผยที่ไหนแน่นอน"</p>
+<div class="jumbotron my-4">
+  <h2 class="display-4 text-center">ห้องแห่งความลับ</h2>
+  <p class="lead">ยินดีต้อนรับสู่คลังเก็บความลับของเรา คุณจะสามารถเก็บความลับของคุณไว้โดยที่ไม่มีใครแอบมาอ่านได้!!
+    เก็บความลับของคุณกับเราวันนี้เริ่มต้น FREE ไม่มีค่าใช้จ่าย!!</p>
+  <hr class="my-4">
+  <p>Feedback จากผู้ใช้</p>
+  <div class="row">
+    <div class="col">
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title">username: Dang</h5>
+          <p class="card-text">"เป็นที่เก็บความลับได้อย่างดี ทำให้ผมไม่ใจว่าความลับของผมจะไม่ถูกเปิดเผยที่ไหนแน่นอน"</p>
+        </div>
+      </div>
     </div>
-
-    <div>
-      username: John
-      <p>"ระบบใช้งานได้ดีมาก ไม่ว่าจะเป็นความลับแบบไหนคุณก็ไม่ต้องกังวลว่าจะถูกเปิดโปง ทำให้ผมลืมความกังวลในชีวิตไปได้หมดเลย"</p>
+    <div class="col">
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title">username: John</h5>
+          <p class="card-text">"ระบบใช้งานได้ดีมาก ไม่ว่าจะเป็นความลับแบบไหนคุณก็ไม่ต้องกังวลว่าจะถูกเปิดโปง
+            ทำให้ผมลืมความกังวลในชีวิตไปได้หมดเลย"</p>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="mt-4 ml-1">
+    <a href="secret">เริ่มต้นใช้งาน</a> 
+  </div>
+</div>
 {% endblock %}

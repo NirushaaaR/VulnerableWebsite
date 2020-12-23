@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, render_template
 from lxml import etree
 
 app = Flask(__name__)
@@ -16,25 +16,10 @@ def hello():
             doc = etree.fromstring(xml.encode(), parser)
             parsed_xml = etree.tostring(doc).decode('utf8')
             print(parsed_xml)
-        except:
-            print("Not XML")
-    return f"""
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XXE</title>
-</head>
-<body>
-    <form method="post" id="xml-form">
-        <textarea name="xml" id="xml-form" cols="30" rows="10"></textarea>
-        <button>Submit</button>
-    </form>
-    {parsed_xml}
-</body>
-</html>
-    """
+        except Exception as err:
+            print(err)
+            parsed_xml = str(err)
+    return render_template("index.html", parsed_xml=parsed_xml)
 
 if __name__ == "__main__":
     # Only for debugging while developing
