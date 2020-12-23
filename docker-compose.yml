@@ -1,14 +1,14 @@
 version: "3.8"
 
 services: 
-    # base-vuln:
-    #     build: ./base-vuln/.
-    #     volumes: 
-    #         - ./base-vuln:/usr/src/app
-    #     environment: 
-    #         - REDIS=redis_db
-    #     ports: 
-    #         - "8000:8000"
+    base-vuln:
+        build: ./base-vuln/.
+        volumes: 
+            - ./base-vuln:/usr/src/app
+        environment: 
+            - REDIS=redis_db
+        ports: 
+            - "8000:8000"
 
     nosqli:
         build:  ./nosqli/.
