@@ -73,7 +73,7 @@ router.post("/test-xss", async (req, res) => {
     const url = req.body.url;
     const result = await browserTestXSS(url);
     if (result) {
-        return res.send({ "message": "FLAG{SOME_FLAG_HERE}" })
+        return res.send({ "message": "FLAG{DOM_BASED_XSS_IS_MYSTERIOUS}" })
     }
 
     return res.send({ "message": "ไม่มี xss" })
