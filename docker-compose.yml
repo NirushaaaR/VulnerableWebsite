@@ -9,6 +9,7 @@ services:
             - REDIS=redis_db
         ports: 
             - "8000:8000"
+        command: npm run dev
 
     nosqli:
         build:  ./nosqli/.
