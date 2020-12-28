@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const allowedHOST = ["127.0.0.1:8000", "localhost:8000"];
+const allowedHOST = ["127.0.0.1:8000", "localhost:8000", "139.162.48.22"];
 
 exports.browserEnterXSS2 = async (randomId) => {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
