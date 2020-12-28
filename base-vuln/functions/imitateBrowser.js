@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+const allowedHOST = ["127.0.0.1:8000", "localhost:8000"];
+
 exports.browserEnterXSS2 = async (randomId) => {
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     try {
@@ -39,7 +41,11 @@ exports.browserEnterXSS1 = async (code) => {
     return code
 }
 
-exports.browserTestXSS = async (url) => {
+exports.browserTestXSS = async (url, waittime=0) => {
+
+    const urlInAllowedHost = allowedHOST.some((ah) => url.includes(ah));
+    if (!urlInAllowedHost) return false;
+
     const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     let result = false;
     try {
@@ -50,6 +56,9 @@ exports.browserTestXSS = async (url) => {
             await dialog.dismiss()
         });
         await page.goto(url);
+        if (waittime > 0) {
+            await page.waitForTimeout(waittime)
+        }
         await page.close();
     } catch (error) {
         console.log("error:", error.message);

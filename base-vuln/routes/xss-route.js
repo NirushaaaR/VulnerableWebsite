@@ -84,4 +84,57 @@ router.get("/xss-mutation", async (req, res) => {
     res.render("xss-mutation", { input: input });
 });
 
+// training xss
+router.get("/xss-training1", async (req, res) => {
+    res.render("xss-training/train1.ejs");
+});
+
+router.post("/test-xss-train1", async (req, res) => {
+    const url = req.body.url;
+    const result = await browserTestXSS(url);
+    if (result) {
+        return res.send({ "message": "FLAG{XSS_IS_SO_SIMPLE}" })
+    }
+    res.send({ "message": "ไม่มี xss" })
+})
+
+router.get("/xss-training2", async (req, res) => {
+    res.render("xss-training/train2.ejs");
+});
+
+router.post("/test-xss-train2", async (req, res) => {
+    const url = req.body.url;
+    const result = await browserTestXSS(url);
+    if (result) {
+        return res.send({ "message": "FLAG{FOCUS_ON_THE_FORM_INSIDE}" })
+    }
+    res.send({ "message": "ไม่มี xss" })
+})
+
+router.get("/xss-training3", async (req, res) => {
+    res.render("xss-training/train3.ejs");
+});
+
+router.post("/test-xss-train3", async (req, res) => {
+    const url = req.body.url;
+    const result = await browserTestXSS(url);
+    if (result) {
+        return res.send({ "message": "FLAG{ENCODING_THE_HTML_PAYLOAD}" })
+    }
+    res.send({ "message": "ไม่มี xss" })
+})
+
+router.get("/xss-training4", async (req, res) => {
+    res.render("xss-training/train4.ejs");
+});
+
+router.post("/test-xss-train4", async (req, res) => {
+    const url = req.body.url;
+    const result = await browserTestXSS(url);
+    if (result) {
+        return res.send({ "message": "FLAG{EVAL_TO_THE_EXCUTE}" })
+    }
+    res.send({ "message": "ไม่มี xss" })
+})
+
 module.exports = router;
