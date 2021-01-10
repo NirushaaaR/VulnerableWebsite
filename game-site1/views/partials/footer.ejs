@@ -1,0 +1,48 @@
+<footer class="mt-5">
+    <div id="contact" class="footer">
+        <div class="container">
+            <div class="row pdn-top-30">
+                <div class="col-md-12 ">
+                    <div class="footer-box">
+                        <div class="headinga">
+                            <h3>ที่ติดต่อ</h3>
+                            <span>.....สักที่บนโลกใบนี้.....</span>
+                            <p>(+12) 34567890
+                                <br>demo@gmail.com</p>
+                        </div>
+                        <ul class="location_icon">
+                            <li> <a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                            <li> <a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li> <a href="#"><i class="fa fa-instagram"></i></a></li>
+
+                        </ul>
+                        <div class="menu-bottom">
+                            <ul class="link">
+                                <li> <a href="./">Home</a></li>
+                                <li> <a href="about">About</a></li>
+                                <li> <a href="brand">Brand </a></li>
+                          </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <p>© 2019 All Rights Reserved. Design By<a href="https://html.design/"> Free Html Templates</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const cookie = document.cookie;
+    if (cookie.includes("store-token")){
+        authLink.innerHTML = '<a href="logout">ล็อคเอ้า</a>';
+        const profileLink = document.createElement("li");
+        profileLink.innerHTML = '<a href="profile">ผู้ใช้</a>'
+        authLink.parentNode.insertBefore(profileLink, authLink)
+    } else {
+        authLink.innerHTML = '<a href="login">ล็อคอิน</a>';
+    }
+</script>
