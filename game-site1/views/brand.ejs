@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>pomato</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="public/css/style.css">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="public/css/responsive.css">
+    <!-- fevicon -->
+    <link rel="icon" href="public/images/fevicon.png" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.min.css">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <!-- owl stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="public/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="public/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+<!-- body -->
+
+<body class="main-layout">
+    <!-- header -->
+    <%- include("./partials/header") %>
+    <!-- end header -->
+    <div class="brand_color">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>สินค้าของเรา</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- brand -->
+    <div class="brand">
+        <div class="container">
+            <form method="get" id="searchForm">
+                <div class="form-group">
+                    <label for="search">ค้นหาสินค้าเพิ่มเติม</label>
+                    <input type="text" name="search" id="search" class="form-control">
+                    <!-- อย่าลืมลบทีหลัง -->
+                    <input type="hidden" name="debug" value=''>
+                </div>
+                <button class="btn btn-primary mb-4">ค้นหา</button>
+            </form>
+        </div>
+        <div class="brand-bg">
+            <div class="container">
+                <div class="row text-center">
+                    <% if (error) { %>
+                        <h1>Error: <%=error%></h1>
+                    <% } else if (products.length > 0) { %>
+                    <% products.forEach(p => { %>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 margin">
+                            <div class="brand_box">
+                                <img src="<%=p.image%>" alt="img" />
+                                <h3>$<strong class="red"><%=p.price%></strong></h3>
+                                <span><%=p.name%></span>
+                                <span class="p-4"><%=p.desc%></span>
+                                <button class="btn btn-danger buyphone-btn" onclick="buyPhone(<%=p.id%>)">ซื้อ</button>
+                                <div class="product-star">
+                                <% for (let i=0; i < p.star; i++) { %>
+                                <i><img src="public/images/star.png"/></i>
+                                <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                    <% } else { %>
+                    <h1>ไม่พบสินค้าที่ท่านต้องการ</h1>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end brand -->
+
+    <!-- footer -->
+    <%- include("./partials/footer") %>
+    <!-- end footer -->
+    <!-- Javascript files-->
+    <script src="public/js/jquery.min.js"></script>
+    <script src="public/js/popper.min.js"></script>
+    <script src="public/js/bootstrap.bundle.min.js"></script>
+    <script src="public/js/jquery-3.0.0.min.js"></script>
+    <script src="public/js/plugin.js"></script>
+    <!-- sidebar -->
+    <script src="public/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="public/js/custom.js"></script>
+    <!-- javascript -->
+    <script src="public/js/owl.carousel.js"></script>
+    <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+    <script>
+        async function buyPhone(phoneId) {
+            console.log(phoneId);
+            const res = await fetch("buy-phone", {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ phoneId })
+            });
+            const json = await res.json();
+            alert(json.message);
+        }
+
+        if (!document.cookie.includes("store-token")){
+            document.querySelectorAll(".buyphone-btn").forEach(d => {
+                d.style.display = 'none';
+            });
+        } 
+        
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".fancybox").fancybox({
+                openEffect: "none",
+                closeEffect: "none"
+            });
+
+            $(".zoom").hover(function() {
+
+                $(this).addClass('transition');
+            }, function() {
+
+                $(this).removeClass('transition');
+            });
+        });
+    </script>
+</body>
+
+</html>
