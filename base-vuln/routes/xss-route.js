@@ -55,11 +55,11 @@ router.post('/xss2', async (req, res) => {
         [randomId, req.body.name, req.body.answer],
         async (err) => {
             if (err) {
+                console.log([randomId, req.body.name, req.body.answer])
                 console.log(err);
-                res.send('ERROR CAN"T UPLOAD!!');
+                return res.send('ERROR CAN"T UPLOAD!!');
             }
-            // set clear db every .. hour
-            browserEnterXSS2(randomId);
+            await browserEnterXSS2(randomId);
             return res.redirect(`xss2?answerid=${randomId}`);
         });
 });
