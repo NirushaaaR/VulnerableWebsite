@@ -90,7 +90,6 @@ async function initDb() {
             password: md5("1234567890"),
             admin: true,
             shopReview: "ในฐานะผู้ดูแลเว็บไซต์แห่งนี้ ต้องบอกเลยว่าโทรศัพท์ที่เอามาขายที่นี้มีแต่ของที่คุณภาพดีทั้งนั้น ผมละชอบจริงๆ ทุกบาททุกสตางค์ที่เสียไปคุ้มค่าแน่นอน",
-            credit: 1000000000000,
         },
         {
             firstName: "Janey",
@@ -98,7 +97,13 @@ async function initDb() {
             username: "janifirrr",
             password: md5("asdasdMKKKLspxxx1258621ss;;"), // make it hard for any kind of guessing
             shopReview: "หลังจากได้ใช้บริการร้านแห่งนี้แล้วก็ทำให้รู้ว่า โทรศัพท์ที่มีคุณภาพดีนั้นควรเป็นแบบไหน ทั้งรวดเร็ว พกพาสะดวก และไม่ติดขัด ถึงโทรศัพท์จะแพงแต่คุ้มค่าทุกราคาแน่นอน",
-            credit: 1000000000000,
+        },
+        {
+            firstName: "Bong",
+            lastName: "Bang",
+            username: "BongyBongy",
+            password: md5("asdabnq[aSoFJk;'wS15kd32dd44"), // make it hard for any kind of guessing
+            shopReview: "ฉันไม่มีอะไรจะพูดมาก นอกจากโทรศัพท์มือถือที่นี่นั่น สุดยอด ลองใช้แล้วคุณจะลืมมือถือเครื่องก่อนๆ ที่คุณเคยใช้ไปเลย คุ้มค่าน่าลอง ต้องบอกต่อ",
         }
     ];
 

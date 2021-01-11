@@ -45,12 +45,11 @@ app.post("/register", authRoute.postRegister);
 app.get("/logout", authRoute.logout);
 
 app.get("/profile", authMiddleware.checkUesr, userRoute.profile);
-app.get("/admin", authMiddleware.checkAdmin, userRoute.admin);
 
 
 app.get("/robots.txt", (req, res) => {
     res.type('text/plain');
-    res.send("User-agent: *\nDisallow: /admin/");
+    res.send("User-agent: *\nDisallow: /");
 });
 
 app.use(function (err, req, res, next) {
