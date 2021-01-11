@@ -43,18 +43,52 @@
 
     <div class="container">
         <h1>ข้อมูลผู้ใช้</h1>
-
-        <h3>ชื่อ: <%=user.firstName%> <%=user.lastName%></h3>
-        <h3>Username: <%-user.username%></h3>
-        <h3>สถานะ: <% if (user.admin) { %> แอดมิน <% } else { %> ผู้ใช้ทั่วไป <% } %></h3>
-        <h3>จำนวนเงินที่มี (credit): $<%=user.credit%></h3>
-
+        <div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <hr>
+                      <form class="form" action="##" method="post" id="registrationForm">
+                          <div class="form-group">  
+                              <div class="col-xs-6">
+                                  <label for="firstName"><h4>First name</h4></label>
+                                  <input type="text" disabled class="form-control" name="firstName" id="firstName" value="<%=user.firstName%>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              
+                              <div class="col-xs-6">
+                                <label for="lastName"><h4>Last name</h4></label>
+                                  <input type="text" disabled class="form-control" name="lastName" id="lastName" value="<%=user.lastName%>">
+                              </div>
+                          </div>
+              
+                          <div class="form-group">
+                              
+                              <div class="col-xs-6">
+                                  <label for="credit"><h4>Credit</h4></label>
+                                  <input type="text" disabled class="form-control" name="credit" id="credit" value="$<%=user.credit%>">
+                              </div>
+                          </div>
+              
+                          <div class="form-group">
+                              <div class="col-xs-6">
+                                 <label for="mobile"><h4>สถานะ</h4></label>
+                                  <input type="text" disabled class="form-control" name="mobile" value="<% if (user.admin) { %>แอดมิน<% } else { %>ผู้ใช้ทั่วไป<% } %>">
+                              </div>
+                          </div>
+                      </form>
+                  <hr>
+              </div><!--/tab-content-->
+            </div><!--/col-9-->
         <hr>
         <h2>ของที่สั่งซื้อ</h2>
+        <% if (ownPhone.length === 0) { %>
+            <h3>คุณยังไม่ได้ซื้อของ... <a href="brand" class="text-primary">สั่งซื้อตอนนี้</a></h3>
+        <% } %>
         <% ownPhone.forEach(p => { %>
             <p><%=p.name%>: <%=p.price%>$</p>
         <% }) %>
-
+        <hr>
         <% if (user.admin && user.username !== "admin") { %>
         <div class="flag_user_admin">
             <%=flag_user_admin%>
@@ -72,7 +106,7 @@
             สำหรับ janifirrr: <%=flag_decode_token%>
         </div>
         <% } %>
-
+    </div>
     </div>
     <!-- footer -->
     <%- include("./partials/footer") %>
