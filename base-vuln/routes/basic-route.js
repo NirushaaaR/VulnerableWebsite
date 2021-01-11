@@ -12,7 +12,7 @@ router.get("/requests", async (req, res) => {
     if (req.headers["user-agent"].includes("Opera/9.60")) {
         res.send("เฮ้คุณใช้ browser Opera นี่เอา FLAG ไป: FLAG{USER_AGENT_FROM_THE_BROWSER}")
     } else {
-        res.send("คุณไม่ได้ใช้ Opera browser version 9.60 อย่างงั้นเหรอ!!!")
+        res.send("คุณไม่ได้ใช้ Opera browser version 9.60 อย่างงั้นเหรอ แย่มาก!!!")
     }
 });
 
@@ -20,80 +20,38 @@ router.patch("/requests", async (req, res) => {
     res.send("เฮ้นั่น PATCH request นี่เอา FLAG ไปเลย: FLAG{METHOD_OF_REQUESTS}")
 });
 
-function redirect(res, url, text) {
-    var address = url;
-    var body;
-    var status = 302;
-
-    // Set location header
-    address = res.location(address).get('Location');
-
-    // Support text/{plain,html} by default
-    res.format({
-        text: function () {
-            body = text
-        },
-
-        html: function () {
-            var u = escapeHtml(address);
-            body = text
-        },
-
-        default: function () {
-            body = '';
-        }
-    });
-
-    // Respond
-    res.statusCode = status;
-    res.set('Content-Length', Buffer.byteLength(body));
-
-    if (res.req.method === 'HEAD') {
-        res.end();
-    } else {
-        res.end(body);
-    }
-};
-
 // FLAG{REDIRECT_GOES_RIGHT_ROUND_RIGHT_ROUND}
 // FLAG{ REDIR ECT_G OES_R IGHT_ ROUND _RIGH T_ROU ND}
+// FLAG{SCRIPTING_LIKE_A_PRO}
 
-router.get("/redirect", (req, res) => {
-    return redirect(res, "redirect2", "FLAG{")
-    // res.location("redirect2").send("some text")
+const SCRIPT_FLAG = "LAG{SCRIPTING_LIKE_A_PRO}";
+const randomIdRemeber = {};
+let randomId = Math.floor((1 + Math.random()) * 1000);
+let currentRandomId = 0;
+const payload = [{ flag: 'F', next: randomId, current: '/script' }];
+
+for (let i = 0; i < SCRIPT_FLAG.length; i++) {
+    currentRandomId = randomId;
+    randomId = Math.floor((1 + Math.random()) * 1000)
+    while (randomIdRemeber[randomId]) {
+        randomId = Math.floor((1 + Math.random()) * 1000)
+    }
+    if (i === SCRIPT_FLAG.length - 1) {
+        randomId = null;
+    }
+    payload.push({
+        flag: SCRIPT_FLAG[i],
+        next: randomId,
+        current: "/script/" + currentRandomId
+    });
+    randomIdRemeber[randomId] = true;
+}
+
+payload.forEach(p => {
+    router.get(p.current, (req, res) => {
+        return res.json({ flag: p.flag, next: p.next });
+    });
 });
-
-router.get("/redirect2", (req, res) => {
-    return redirect(res, "redirect3", "REDIR")
-});
-
-router.get("/redirect3", (req, res) => {
-    return redirect(res, "redirect4", "ECT_R")
-});
-
-router.get("/redirect4", (req, res) => {
-    return redirect(res, "redirect5", "IGHT_")
-});
-
-router.get("/redirect5", (req, res) => {
-    return redirect(res, "redirect6", "ROUND")
-});
-
-router.get("/redirect6", (req, res) => {
-    return redirect(res, "redirect7", "_RIGH")
-});
-
-router.get("/redirect7", (req, res) => {
-    return redirect(res, "redirect8", "T_ROU")
-});
-
-router.get("/redirect8", (req, res) => {
-    return redirect(res, "redirect9", "ND}")
-});
-
-router.get("/redirect9", (req, res) => {
-    return res.send("ends here...")
-})
 
 
 module.exports = router;

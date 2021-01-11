@@ -61,11 +61,11 @@ router.post("/idor1", async (req, res) => {
 });
 
 
-router.get("/idor2", async (req, res) => {
+router.get("/cookie-manipulation", async (req, res) => {
     res.render("broken-acl/idor2", { "err": undefined });
 });
 
-router.post("/idor2", async (req, res) => {
+router.post("/cookie-manipulation", async (req, res) => {
     const { username, password, information, mode } = req.body;
     if (mode === "register") {
         db.get("SELECT COUNT(id) AS numId FROM user", (err, row) => {
@@ -82,7 +82,7 @@ router.post("/idor2", async (req, res) => {
                         res.render("broken-acl/idor2", { err: err.message });
                     } else {
                         res.cookie("username", username, { maxAge: 900000, httpOnly: true })
-                        res.redirect("/broken-acl/idor2/panel");
+                        res.redirect("/broken-acl/cookie-manipulation/panel");
                     }
                 });
         });
@@ -96,7 +96,7 @@ router.post("/idor2", async (req, res) => {
                     res.render("broken-acl/idor2", { err: message });
                 } else {
                     res.cookie("username", username, { maxAge: 900000, httpOnly: true })
-                    res.redirect("/broken-acl/idor2/panel");
+                    res.redirect("/broken-acl/cookie-manipulation/panel");
                 }
             })
     } else {
@@ -104,7 +104,7 @@ router.post("/idor2", async (req, res) => {
     }
 });
 
-router.get("/idor2/panel", async (req, res) => {
+router.get("/cookie-manipulation/panel", async (req, res) => {
     if (req.cookies["username"] !== undefined) {
         db.get("SELECT * FROM user WHERE username=?",
             req.cookies["username"],
@@ -113,14 +113,14 @@ router.get("/idor2/panel", async (req, res) => {
                     const message = err ? err.message : "user not exists";
                     res.clearCookie("username");
                     console.log("err sign-in:", message);
-                    res.redirect("/broken-acl/idor2");
+                    res.redirect("/broken-acl/cookie-manipulation");
                 } else {
                     // console.log(row);
                     res.render("broken-acl/idor2-panel", {user: row});
                 }
             })
     } else {
-        res.redirect("/broken-acl/idor2");
+        res.redirect("/broken-acl/cookie-manipulation");
     }
 
 });
