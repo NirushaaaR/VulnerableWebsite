@@ -29,7 +29,7 @@ function initNewDb() {
         db.run("DROP TABLE IF EXISTS quiz");
         db.run("DROP TABLE IF EXISTS user");
 
-        db.run("CREATE TABLE quiz (id INTEGER NOT NULL PRIMARY KEY, name TEXT, answer TEXT)");
+        db.run("CREATE TABLE quiz (id VARCHAR(4) NOT NULL PRIMARY KEY, name TEXT, answer TEXT)");
         db.run("CREATE TABLE user (id INTEGER NOT NULL PRIMARY KEY, username TEXT, password TEXT, information TEXT, isAdmin BOOLEAN City varchar(255) DEFAULT 'false')");
 
         const usersLists = [
