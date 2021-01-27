@@ -1,16 +1,16 @@
 version: "3.8"
 
 services: 
-    base-vuln:
-        build: ./base-vuln/.
-        volumes: 
-            - ./base-vuln:/usr/src/app
-        environment: 
-            - REDIS=redis_db
-            - DEBUG=1
-        ports: 
-            - "8000:8000"
-        command: npm run dev
+    # base-vuln:
+    #     build: ./base-vuln/.
+    #     volumes: 
+    #         - ./base-vuln:/usr/src/app
+    #     environment: 
+    #         - REDIS=redis_db
+    #         - DEBUG=1
+    #     ports: 
+    #         - "8000:8000"
+    #     command: npm run dev
     
     # game-site1:
     #     build: ./game-site1/.
@@ -26,11 +26,20 @@ services:
     #     ports: 
     #         - "10000:10000"
     
-    xxe:
-        build: ./xxe/.
+    # xxe:
+    #     build: ./xxe/.
+    #     volumes: 
+    #         - ./xxe/app:/app
+    #     environment: 
+    #         - DEBUG=1
+    #     ports: 
+    #         - "9000:9000"
+    
+    lfi:
+        build: ./lfi/.
         volumes: 
-            - ./xxe/app:/app
+            - ./lfi/app:/app
         environment: 
             - DEBUG=1
         ports: 
-            - "9000:9000"
+            - "12000:12000"
