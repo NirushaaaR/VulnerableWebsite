@@ -44,10 +44,12 @@ function initNewDb() {
         sqliDB.run("DROP TABLE IF EXISTS gift");
         sqliDB.run("DROP TABLE IF EXISTS secret");
         sqliDB.run("DROP TABLE IF EXISTS user");
+        sqliDB.run("DROP TABLE IF EXISTS artinmuse");
 
         sqliDB.run("CREATE TABLE gift (id INTEGER NOT NULL PRIMARY KEY, person TEXT, want TEXT)");
         sqliDB.run("CREATE TABLE secret (flag TEXT)");
         sqliDB.run("CREATE TABLE user (username TEXT, password TEXT, email TEXT, name TEXT, bio TEXT, isAdmin boolean)");
+        sqliDB.run("CREATE TABLE artinmuse (id INTEGER NOT NULL PRIMARY KEY, title TEXT, author TEXT, img TEXT)");
 
         const giftLists = [
             [1, "bruce", "macbook"],
@@ -68,6 +70,19 @@ function initNewDb() {
         const userCommand = "INSERT INTO user(username, password, email, name, bio, isAdmin) VALUES " + users.map(
             u => `("${u[0]}", "${u[1]}", "${u[2]}", "${u[3]}", "${u[4]}", "${u[5]}")`).join(",");
         sqliDB.run(userCommand);
+        
+        const artinmuse = [
+            [1, "Mona Lisa", "Leonardo Da Vinci", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1200px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg"],
+            [2, "The Starry Night", "Vincent Van Gogh", "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1024px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"],
+            [3, "The Scream", "Edvard Munch", "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/330px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg"],
+            [4, "The Night Watch", "Rembrandt","https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/The_Night_Watch_-_HD.jpg/570px-The_Night_Watch_-_HD.jpg"],
+            [5, "The Kiss", "Gustav Klimt", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg/330px-The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg"],
+            [6, "The Arnolfini Portrait", "Jan van Eyck", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Van_Eyck_-_Arnolfini_Portrait.jpg/450px-Van_Eyck_-_Arnolfini_Portrait.jpg"],
+        ]
+        const artinmuseCommand = "INSERT INTO artinmuse(id, title, author, img) VALUES " + artinmuse.map(
+            d => `("${d[0]}", "${d[1]}", "${d[2]}", "${d[3]}")`
+        ).join(",");
+        sqliDB.run(artinmuseCommand);
 
     });
 

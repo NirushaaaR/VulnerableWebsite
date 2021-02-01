@@ -42,7 +42,22 @@ router.post("/login", async (req, res) => {
     })
 
 
-})
+});
+
+router.get("/error-based", async (req, res) => {
+    let command = 'SELECT * FROM artinmuse';
+    if (req.query.search) {
+        command += ` WHERE title="${req.query.search}" OR author="${req.query.search}"`
+    }
+    sqliDB.all(command, function (err, arts) {
+        if (err) {
+            const message = err.message + " query: "+ command + " FLAG{ERROR_FROM_SQL_COMMAND}";
+            return res.render("sqli/error-based", { arts, err: message });
+        }
+
+        return res.render("sqli/error-based", { arts, err });
+    });
+});
 
 router.get("/blind", async (req, res) => {
     sqliDB.get("PRAGMA full_column_names;", (err, row) => {
