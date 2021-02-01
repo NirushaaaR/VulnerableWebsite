@@ -14,8 +14,12 @@ def index():
             note_content = open(note_name).read()
     except FileNotFoundError:
         note_content = "ไม่มี Note นั้นอยู่!!"
+    except IsADirectoryError:
+        note_content = f"{note_name} ไม่ใช่ File"
+    except:
+        note_content = "มีข้อผิดพลาดเกินขึ้น"
     return render_template("index.html", note_content=note_content)
-    
+
 
 if __name__ == "__main__":
     # Only for debugging while developing

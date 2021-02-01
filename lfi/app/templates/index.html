@@ -11,18 +11,20 @@
 
 <body>
     <div class="container">
-        <p>Note Page</p>
-        <ul>
-            <li><a href="?file=note1.txt">Note1</a></li>
-            <li><a href="?file=note2.txt">Note2</a></li>
-            <li><a href="?file=note3.txt">Note3</a></li>
-            <li><a href="?file=note4.txt">Note4</a></li>
-            <li><a href="?file=note5.txt">Note5</a></li>
-        </ul>
+        <p class="mt-2">Note Page: ที่เก็บ note ต่าง ๆ ไว้มาอ่านทีหลัง</p>
+        <div>
+        <div class="d-inline"><a href="?file=note1.txt">Note1</a></div>
+        <div class="d-inline"><a href="?file=note2.txt">Note2</a></div>
+        <div class="d-inline"><a href="?file=note3.txt">Note3</a></div>
+        <div class="d-inline"><a href="?file=note4.txt">Note4</a></div>
+        <div class="d-inline"><a href="?file=note5.txt">Note5</a></div>
+        </div>
         <hr>
+        {% if note_content %}
         <div class="note-content">
             <textarea name="note-content" style="width: 100%;" rows="10">{{note_content}}</textarea>
         </div>
+        {% endif %}
     </div>
 </body>
 
