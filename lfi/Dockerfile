@@ -10,6 +10,7 @@ RUN pip install -r /requirements.txt
 COPY ./app /app
 
 COPY ./flag.txt /flag.txt
+RUN chmod 400 /flag.txt
 
 WORKDIR /app
 
