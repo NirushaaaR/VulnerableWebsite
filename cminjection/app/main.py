@@ -1,12 +1,15 @@
+import os
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-DEBUG = False
+DEBUG = bool(os.environ.get("DEBUG",None))
+os = None
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     context = {}
+    
     if request.method == "POST":
         data = request.form.get("calculator")
         try:

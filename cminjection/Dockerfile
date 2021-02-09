@@ -13,8 +13,8 @@ COPY ./flag.txt /flag.txt
 
 RUN chmod 444 /flag.txt
 
-RUN useradd -ms /bin/bash the_new_user
-USER the_new_user
+RUN useradd -M -d /app user
+USER user
 
 WORKDIR /app
 

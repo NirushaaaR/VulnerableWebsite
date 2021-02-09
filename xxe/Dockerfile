@@ -11,7 +11,10 @@ COPY ./app /app
 
 COPY ./flag.txt /flag.txt
 
-RUN chmod 400 /flag.txt
+RUN chmod 444 /flag.txt
+
+RUN useradd -M -d /app user
+USER user
 
 WORKDIR /app
 
