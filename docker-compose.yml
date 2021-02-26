@@ -46,17 +46,17 @@ services:
     #     ports: 
     #         - "12000:12000"
 
-    cminjection:
-        build: ./cminjection/.
-        volumes: 
-            - ./cminjection/app:/app
-        environment: 
-            - DEBUG=1
-            - FLASK_ENV="development"
-        ports: 
-            - "12600:12600"
+    #cminjection:
+    #    build: ./cminjection/.
+    #    volumes: 
+    #        - ./cminjection/app:/app
+    #    environment: 
+    #        - DEBUG=1
+    #        - FLASK_ENV="development"
+    #    ports: 
+    #        - "12600:12600"
     
-    # todoreact:
-    #     build: ./todoreact/.
-    #     ports:
-    #         - "5000:5000"
+     todoreact:
+         build: ./todoreact/.
+         ports:
+             - "9999:9999"

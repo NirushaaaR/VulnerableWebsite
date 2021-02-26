@@ -1,4 +1,4 @@
-flask
-pymongo
-dnspython
-pyjwt
+Flask==1.1.2
+pymongo==3.11.2
+dnspython==2.0.0
+PyJWT==1.7.1

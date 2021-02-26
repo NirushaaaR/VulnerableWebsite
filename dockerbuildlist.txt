@@ -1,0 +1,8 @@
+misnomer747/calculatorapp:latest 12600
+misnomer747/todolist:latest 9999
+misnomer747/xmlplayground:latest 9000
+misnomer747/secretkeeper:latest 10000
+misnomer747/notekeep:latest 12000
+misnomer747/pamelo:latest 11000
+misnomer747/baseweb:latest 8000
+misnomer747/struct-cve-2017-5638 8080
